@@ -55,10 +55,10 @@ class _TaskQueue {
 ///
 /// It is used as an optimization to make adding write tasks as an O(1)
 /// operation.
-class _WriteGroup implements Comparable {
+class _WriteGroup implements Comparable<_WriteGroup> {
   final int priority;
 
-  Completer _completer;
+  Completer<dynamic> _completer;
 
   _WriteGroup(this.priority);
 
@@ -85,7 +85,7 @@ class Frame {
     if (priority == lowestPriority) {
       if (_writeGroup == null) {
         _writeGroup = new _WriteGroup(lowestPriority);
-        _writeGroup._completer = new Completer();
+        _writeGroup._completer = new Completer<dynamic>();
       }
       return _writeGroup._completer.future;
     }
@@ -99,7 +99,7 @@ class Frame {
 
     final g = _prioWriteGroups[priority];
     if (g._completer == null) {
-      g._completer = new Completer();
+      g._completer = new Completer<dynamic>();
       _writeQueue.add(g);
     }
 
@@ -110,7 +110,7 @@ class Frame {
   /// executing read tasks.
   Future read() {
     if (_readCompleter == null) {
-      _readCompleter = new Completer();
+      _readCompleter = new Completer<dynamic>();
     }
     return _readCompleter.future;
   }
@@ -119,7 +119,7 @@ class Frame {
   /// executing all write and read tasks.
   Future after() {
     if (_afterCompleter == null) {
-      _afterCompleter = new Completer();
+      _afterCompleter = new Completer<dynamic>();
     }
     return _afterCompleter.future;
   }
@@ -176,7 +176,7 @@ class Scheduler {
   /// [Future] that will be completed on the next tick.
   Future get nextTick {
     if (_nextTickCompleter == null) {
-      _nextTickCompleter = new Completer();
+      _nextTickCompleter = new Completer<dynamic>();
       _requestNextTick();
     }
     return _nextTickCompleter.future;
@@ -186,7 +186,7 @@ class Scheduler {
     _zoneSpec = new ZoneSpecification(scheduleMicrotask: _scheduleMicrotask);
     _zone = Zone.current.fork(specification: _zoneSpec);
 
-    _onNextFrameController = new StreamController.broadcast(onListen: _handleNextFrameListen);
+    _onNextFrameController = new StreamController<dynamic>.broadcast(onListen: _handleNextFrameListen);
   }
 
   void _handleNextFrameListen() {
@@ -303,7 +303,7 @@ class Scheduler {
     }
   }
 
-  void run(fn) {
+  void run(Function fn) {
     time = html.window.performance.now();
 
     _zone.run(() {

@@ -47,7 +47,7 @@ Future injectComponent(Component component, html.Node container) {
 Future mountComponent(Component component, html.Node node) {
   final mount = () async {
     await scheduler.nextFrame.write();
-    component.mount(node);
+    component.mount(node as html.Element);
     component.init();
     component.attach();
   };
@@ -78,7 +78,7 @@ VNode vRoot({String type, Map<int, dynamic> attrs, Map<String, String> customAtt
       new VNode.root(type: type, attrs: attrs, customAttrs: customAttrs, style: style,
           classes: classes, children: children, content: content);
 
-VNode vComponent(componentConstructor componentType, {Object key, dynamic data,
+VNode vComponent<T>(componentConstructor<T> componentType, {Object key, T data,
   String type, Map<int, dynamic> attrs, Map<String, String> customAttrs, Map<int, String> style,
   List<String> classes, List<VNode> children, Anchor anchor}) =>
       new VNode.component(componentType, key: key, data: data, type: type,

@@ -139,7 +139,7 @@ abstract class Component<P> extends RevisionedNode with StreamListenerNode imple
   /// When updating is finished, lifecycle method [updated] will be invoked.
   ///
   /// Invoked during the [Scheduler] *write dom* phase.
-  void update([_]) {
+  void update([dynamic _]) {
     if ((flags & shouldUpdateViewFlags) == shouldUpdateViewFlags) {
       Future future;
       if (updateState()) {
@@ -153,7 +153,7 @@ abstract class Component<P> extends RevisionedNode with StreamListenerNode imple
     }
   }
 
-  void _finishUpdate([_]) {
+  void _finishUpdate([dynamic _]) {
     updateRevision();
     flags &= ~dirtyFlag;
     updated();
@@ -201,7 +201,7 @@ abstract class Component<P> extends RevisionedNode with StreamListenerNode imple
   ///
   /// Component will be marked as dirty and added to the update queue. All
   /// transient subscriptions will be canceled immediately.
-  void invalidate([_]) {
+  void invalidate([dynamic _]) {
     if ((flags & dirtyFlag) == 0) {
       flags |= dirtyFlag;
       cancelTransientSubscriptions();
@@ -396,4 +396,4 @@ abstract class SvgComponent<P> extends Component<P> {
 /// *NOTE*:It will be removed when
 /// [metaclasses](https://github.com/gbracha/metaclasses) will be implemented
 /// in Dart.
-typedef Component componentConstructor();
+typedef Component<T> componentConstructor<T>();

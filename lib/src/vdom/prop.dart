@@ -12,17 +12,19 @@ class Prop {
   static const int value = 1;
 }
 
-typedef _PropSetter(html.Element element, dynamic value);
+typedef void _PropSetter(html.InputElement element, dynamic value);
 
-void _setChecked(html.InputElement element, bool value) {
-  if (element.checked != value) {
-    element.checked = value;
+void _setChecked(html.InputElement element, dynamic value) {
+  bool b = value as bool;
+  if (element.checked != b) {
+    element.checked = b;
   }
 }
 
-void _setValue(html.InputElement element, String value) {
-  if (element.value != value) {
-    element.value = value;
+void _setValue(html.InputElement element, dynamic value) {
+  String str_value = value as String;
+  if (element.value != str_value) {
+    element.value = str_value;
   }
 }
 
